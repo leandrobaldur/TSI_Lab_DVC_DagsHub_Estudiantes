@@ -1,0 +1,25 @@
+[project]
+name = "tsi-dvc-lineage-lab"
+version = "0.1.0"
+description = "Laboratorio didactico de DVC, DagsHub Storage y data lineage"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dvc-s3>=3.2,<4",
+    "joblib>=1.4,<2",
+    "pandas>=2.2,<3",
+    "scikit-learn>=1.5,<2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3,<9",
+    "ruff>=0.12,<1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

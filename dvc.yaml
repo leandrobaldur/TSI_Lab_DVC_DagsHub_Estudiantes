@@ -1,0 +1,18 @@
+stages:
+  preparar:
+    cmd: uv run python src/preparar.py
+    deps:
+      - data/raw/clientes.csv
+      - src/preparar.py
+    outs:
+      - data/processed/clientes.csv
+  entrenar:
+    cmd: uv run python src/entrenar.py
+    deps:
+      - data/processed/clientes.csv
+      - src/entrenar.py
+    outs:
+      - models/model.pkl
+    metrics:
+      - metrics.json:
+          cache: false
