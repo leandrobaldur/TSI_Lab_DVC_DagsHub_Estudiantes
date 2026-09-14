@@ -1,0 +1,7 @@
+[core]
+    remote = origin
+[cache]
+    type = copy
+['remote "origin"']
+    url = s3://dvc
+    endpointurl = https://dagshub.com/leandrobaldur/tsi-dvc-lineage-lab.s3

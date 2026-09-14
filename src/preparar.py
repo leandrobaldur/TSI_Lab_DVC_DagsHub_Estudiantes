@@ -1,20 +1,19 @@
-"""Etapa 1 del laboratorio.
-
-TODO estudiante:
-1. Leer data/raw/clientes.csv.
-2. Eliminar duplicados y filas con nulos.
-3. Crear ingresos_miles = ingresos / 1000.
-4. Guardar data/processed/clientes.csv.
-"""
 from pathlib import Path
+import pandas as pd
 
 RAW = Path("data/raw/clientes.csv")
 OUTPUT = Path("data/processed/clientes.csv")
 
-
 def main() -> None:
-    raise NotImplementedError("Completar la etapa de preparacion")
+    df = pd.read_csv(RAW)
+    df = df.drop_duplicates()
+    df = df.dropna()
+    df["ingresos_miles"] = df["ingresos"] / 1000
 
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(OUTPUT, index=False)
+
+    print(f"Dataset procesado: {len(df)} registros")
 
 if __name__ == "__main__":
     main()

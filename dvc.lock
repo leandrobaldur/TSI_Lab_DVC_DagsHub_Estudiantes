@@ -1,0 +1,38 @@
+schema: '2.0'
+stages:
+  preparar:
+    cmd: uv run python src/preparar.py
+    deps:
+    - path: data/raw/clientes.csv
+      hash: md5
+      md5: acb7dfb7b24f9ee9ca6b6717db654e3a
+      size: 185
+    - path: src/preparar.py
+      hash: md5
+      md5: de4ee6a87ea23ea536e888835deb17b7
+      size: 455
+    outs:
+    - path: data/processed/clientes.csv
+      hash: md5
+      md5: 4b318de274f929b00f521b3c0a7c9f3b
+      size: 266
+  entrenar:
+    cmd: uv run python src/entrenar.py
+    deps:
+    - path: data/processed/clientes.csv
+      hash: md5
+      md5: 4b318de274f929b00f521b3c0a7c9f3b
+      size: 266
+    - path: src/entrenar.py
+      hash: md5
+      md5: b79bb2be46d5e35f8049b9fe7b553f3a
+      size: 1025
+    outs:
+    - path: metrics.json
+      hash: md5
+      md5: 7ae921f487cc54c3f03c9ca616d46cf7
+      size: 24
+    - path: models/model.pkl
+      hash: md5
+      md5: eb109bd49e70d99c6feb1e447fd1720c
+      size: 1167
