@@ -9,3 +9,4 @@ __pycache__/
 metrics.json
 models/*.pkl
 data/processed/*.csv
+/reporte.txt

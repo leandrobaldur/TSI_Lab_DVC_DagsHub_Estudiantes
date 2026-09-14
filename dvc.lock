@@ -36,3 +36,19 @@ stages:
       hash: md5
       md5: eb109bd49e70d99c6feb1e447fd1720c
       size: 1167
+  evaluar:
+    cmd: uv run python src/evaluar.py
+    deps:
+    - path: models/model.pkl
+      hash: md5
+      md5: eb109bd49e70d99c6feb1e447fd1720c
+      size: 1167
+    - path: src/evaluar.py
+      hash: md5
+      md5: 6b37847f02c8566c107a5720c44bdf87
+      size: 684
+    outs:
+    - path: reporte.txt
+      hash: md5
+      md5: 13fd83e31bc286baa3a16813e099336b
+      size: 134

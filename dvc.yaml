@@ -16,3 +16,10 @@ stages:
     metrics:
       - metrics.json:
           cache: false
+  evaluar:
+    cmd: uv run python src/evaluar.py
+    deps:
+      - models/model.pkl
+      - src/evaluar.py
+    outs:
+      - reporte.txt
