@@ -1,0 +1,35 @@
+1. ¿Por qué Git no es suficiente para versionar datasets y modelos grandes?
+Porque Git está diseñado para rastrear cambios en código fuente (texto plano). Si guardas archivos binarios grandes (como datasets pesados o modelos .pkl), el repositorio se vuelve lento, pesado y Git no puede comparar eficientemente las diferencias entre versiones.
+
+2. ¿Qué contiene clientes.csv.dvc y qué no contiene?
+Contiene metadatos, como un hash (una huella digital única), el tamaño del archivo y la ruta. No contiene los datos reales (las filas y columnas del CSV); funciona únicamente como un puntero ligero que Git sí puede versionar.
+
+3. ¿Qué problema resuelve pyproject.toml en este laboratorio?
+Resuelve el problema de la reproducibilidad del entorno de software. Define exactamente qué versión de Python y qué librerías (pandas, scikit-learn, etc.) se necesitan, permitiendo que cualquier persona en otra computadora instale exactamente el mismo entorno (con uv sync).
+
+4. ¿Cuál es la diferencia entre dvc.yaml y dvc.lock?
+
+dvc.yaml es la receta: describe de forma declarativa los pasos lógicos del pipeline, sus comandos, entradas y salidas.
+
+dvc.lock es el registro exacto: guarda los hashes específicos de la última ejecución exitosa, permitiendo congelar y recuperar ese estado exacto del proyecto en el futuro.
+
+5. ¿Qué ocurre si cambia únicamente src/entrenar.py?
+Al ejecutar dvc repro, DVC detectará que los datos crudos y el script de preparación siguen intactos. Por lo tanto, se saltará la etapa preparar para ahorrar tiempo y ejecutará únicamente la etapa de entrenar (y cualquier etapa que dependa de esta, como evaluar).
+
+6. ¿Por qué un cambio en data/raw/clientes.csv puede hacer que se repita el entrenamiento?
+Por el linaje de datos (Data Lineage). El archivo clientes.csv alimenta la etapa preparar, lo que cambia su archivo de salida (processed/clientes.csv). Como este archivo procesado es la entrada de la etapa entrenar, el cambio viaja en cascada e invalida el modelo anterior, obligando a reentrenar.
+
+7. ¿Cuál es la diferencia entre git push y dvc push?
+
+git push sube tu código fuente, configuraciones y los metadatos ligeros (archivos .dvc) al repositorio de Git.
+
+dvc push sube tus archivos pesados reales (los datasets y los modelos en la caché de DVC) al almacenamiento remoto en la nube (como el S3 de DagsHub).
+
+8. ¿Dónde debe guardarse un token de DagsHub y dónde nunca debe guardarse?
+Debe guardarse en el archivo local de DVC (.dvc/config.local) usando el parámetro --local. Nunca debe guardarse en archivos que vayan a subirse a Git (como el .dvc/config normal o en código fuente) para no exponer tus contraseñas al público.
+
+9. ¿Qué significa Data Lineage en el contexto de este pipeline?
+Es la trazabilidad de los datos. Significa que, al ver el modelo final, puedes trazar el camino hacia atrás para saber exactamente qué código lo entrenó, qué datos procesados utilizó y de qué dataset crudo provino todo inicialmente.
+
+10. ¿Por qué dvc repro puede ahorrar tiempo respecto a ejecutar todos los scripts manualmente?
+Porque DVC analiza los hashes de las dependencias antes de empezar. Solo re-ejecuta aquellas etapas donde el código o los datos hayan cambiado, omitiendo de forma inteligente las etapas que ya fueron procesadas y siguen vigentes.
